@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - php
+    ports:
+      - '80:80'
+    volumes:
+      - '.:/var/www/html'
+      - './.docker/nginx.conf:/etc/nginx/conf.d/default.conf'
+
+  php:
+    build: './.docker'
+    depends_on:
+      - db
+    volumes:
+      - '.:/var/www/html'
+      - './.docker/user.ini:/usr/local/etc/php/conf.d/user.ini'
+
+  db:
+    image: mariadb:10.5.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'testik'
+      MYSQL_DATABASE: 'rss_reader'
+      MYSQL_USER: 'dbuser'
+      MYSQL_PASSWORD: 'dbpass'
+    command: 'mysqld --sql_mode="TRADITIONAL,NO_ENGINE_SUBSTITUTION"'
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    environment:
+      ADMINER_DESIGN: 'hever'
