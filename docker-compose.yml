@@ -27,7 +27,7 @@ services:
       MYSQL_DATABASE: 'rss_reader'
       MYSQL_USER: 'dbuser'
       MYSQL_PASSWORD: 'dbpass'
-    command: 'mysqld --sql_mode="TRADITIONAL,NO_ENGINE_SUBSTITUTION"'
+    command: 'mysqld --sql_mode="TRADITIONAL,NO_ENGINE_SUBSTITUTION" --default-time-zone="Europe/Bratislava"'
 
   adminer:
     image: adminer
